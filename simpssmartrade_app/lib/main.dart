@@ -8,15 +8,23 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
-  final themeModeIndex = prefs.getInt('themeMode') ?? ThemeMode.system.index;
+  final themeModeIndex =
+      prefs.getInt('themeMode') ?? ThemeMode.system.index;
   final themeMode = ThemeMode.values[themeModeIndex];
 
-  await NotificationService.instance.initialize();
-  await NotificationService.instance.scheduleDefaultRemindersIfEnabled();
-
   runApp(SimpSmarTradeApp(initialThemeMode: themeMode));
-}
 
+  // Initialize notifications AFTER UI loads
+  Future.microtask(() async {
+    try {
+      await NotificationService.instance.initialize();
+      await NotificationService.instance
+          .scheduleDefaultRemindersIfEnabled();
+    } catch (e) {
+      debugPrint('Notification init error: $e');
+    }
+  });
+}
 class SimpSmarTradeApp extends StatefulWidget {
   const SimpSmarTradeApp({super.key, required this.initialThemeMode});
 
