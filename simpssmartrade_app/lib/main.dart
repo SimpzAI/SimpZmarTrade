@@ -3,6 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/home_screen.dart';
 import 'services/notification_service.dart';
+import 'models/trader_profile.dart';
+import 'models/day_session.dart';
+import 'models/trade.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
