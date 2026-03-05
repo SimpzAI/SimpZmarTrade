@@ -1,50 +1,78 @@
 import 'package:flutter/material.dart';
+import '../services/market_data_service.dart';
 
-import '../services/market_api.dart';
+class TradeScript {
+  final String symbol;
+  final String exchange;
+  final String setup;
+  final double entry;
+  final double sl;
+  final double t1;
+  final double t2;
+  final String newsFlag;
+
+  TradeScript({
+    required this.symbol,
+    required this.exchange,
+    required this.setup,
+    required this.entry,
+    required this.sl,
+    required this.t1,
+    required this.t2,
+    required this.newsFlag,
+  });
+}
 
 class ScriptsList extends StatelessWidget {
-  const ScriptsList({super.key, this.showHeader = false});
-
   final bool showHeader;
+
+  const ScriptsList({super.key, this.showHeader = false});
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<TradeScript>>(
-      future: MarketApi.instance.fetchScripts(),
-      builder: (context, snap) {
-        final scripts = snap.data ?? const <TradeScript>[];
+    final scripts = [
+      TradeScript(
+        symbol: "BEL",
+        exchange: "NSE",
+        setup: "Breakout above prev high; only long.",
+        entry: 450,
+        sl: 441,
+        t1: 455,
+        t2: 460,
+        newsFlag: "OK",
+      ),
+      TradeScript(
+        symbol: "SUNPHARMA",
+        exchange: "NSE",
+        setup: "Breakout > 1792 / VWAP reclaim.",
+        entry: 1793,
+        sl: 1770,
+        t1: 1805,
+        t2: 1820,
+        newsFlag: "OK",
+      ),
+    ];
 
-        if (snap.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snap.hasError) {
-          return Center(
-            child: Text('Could not load scripts.\n${snap.error}', textAlign: TextAlign.center),
-          );
-        }
-
-        if (scripts.isEmpty) {
-          return const Center(child: Text('No scripts. Set backend URL in Settings.'));
-        }
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (showHeader) ...[
-              Text('Top ${scripts.length} scripts', style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 8),
-            ],
-            Expanded(
-              child: ListView.separated(
-                itemCount: scripts.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
-                itemBuilder: (context, i) => _ScriptCard(script: scripts[i]),
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (showHeader)
+          const Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(
+              "Scripts",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ],
-        );
-      },
+          ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: scripts.length,
+            itemBuilder: (context, index) {
+              return _ScriptCard(script: scripts[index]);
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -58,7 +86,8 @@ class _ScriptCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    Color? badgeColor;
+    Color badgeColor;
+
     switch (script.newsFlag) {
       case 'OK':
         badgeColor = Colors.green;
@@ -74,61 +103,82 @@ class _ScriptCard extends StatelessWidget {
     }
 
     return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+            /// SYMBOL + BADGE
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(script.symbol, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
-                const SizedBox(width: 8),
-                if (script.exchange != null) _Pill(text: script.exchange!),
-                const Spacer(),
-                if (script.newsFlag != null) _Pill(text: script.newsFlag!, color: badgeColor),
+                Row(
+                  children: [
+                    Text(
+                      script.symbol,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Chip(label: Text(script.exchange)),
+                  ],
+                ),
+                Chip(
+                  label: Text(script.newsFlag),
+                  backgroundColor: badgeColor.withOpacity(0.2),
+                  labelStyle: TextStyle(color: badgeColor),
+                ),
               ],
             ),
+
             const SizedBox(height: 8),
-            if (script.oneLine != null) Text(script.oneLine!, maxLines: 2, overflow: TextOverflow.ellipsis),
+
+            /// SETUP DESCRIPTION
+            Text(script.setup),
+
             const SizedBox(height: 10),
+
+            /// ENTRY / SL / TARGETS
             Wrap(
               spacing: 8,
-              runSpacing: 8,
               children: [
-                if (script.entry != null) _Pill(text: 'Entry: ${script.entry}'),
-                if (script.sl != null) _Pill(text: 'SL: ${script.sl}'),
-                if (script.t1 != null) _Pill(text: 'T1: ${script.t1}'),
-                if (script.t2 != null) _Pill(text: 'T2: ${script.t2}'),
+                Chip(label: Text("Entry: ${script.entry}")),
+                Chip(label: Text("SL: ${script.sl}")),
+                Chip(label: Text("T1: ${script.t1}")),
+                Chip(label: Text("T2: ${script.t2}")),
               ],
             ),
+
+            const SizedBox(height: 10),
+
+            /// LIVE PRICE
+            FutureBuilder<double?>(
+              future: MarketDataService.getPrice(script.symbol),
+              builder: (context, snapshot) {
+
+                if (!snapshot.hasData) {
+                  return const Text("Loading price...");
+                }
+
+                return Text(
+                  "LTP: ₹${snapshot.data}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.green,
+                  ),
+                );
+
+              },
+            ),
+
           ],
         ),
       ),
-    );
-  }
-}
-
-class _Pill extends StatelessWidget {
-  const _Pill({required this.text, this.color});
-
-  final String text;
-  final Color? color;
-
-  @override
-  Widget build(BuildContext context) {
-    final bg = color?.withValues(alpha: 0.15) ?? Theme.of(context).colorScheme.surfaceContainerHighest;
-    final fg = color ?? Theme.of(context).colorScheme.onSurface;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(999),
-        color: bg,
-        border: Border.all(color: (color ?? Theme.of(context).colorScheme.outline).withValues(alpha: 0.25)),
-      ),
-      child: Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: fg)),
     );
   }
 }

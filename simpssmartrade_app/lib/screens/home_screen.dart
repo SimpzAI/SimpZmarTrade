@@ -7,6 +7,7 @@ import '../models/trade.dart';
 import '../widgets/tomorrow_plan_card.dart';
 import '../widgets/scripts_list.dart';
 import '../widgets/discipline_strip.dart';
+import 'markets_screen.dart';
 
 import 'settings_screen.dart';
 
@@ -47,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const _DashboardPage(),
       const _ScriptsPage(),
       const SettingsScreen(),
+      const MarketsScreen(),
     ];
 
     return Scaffold(
@@ -69,6 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
           NavigationDestination(
             icon: Icon(Icons.list_alt_outlined),
             label: 'Scripts',
+          ),
+            NavigationDestination(
+              icon: Icon(Icons.public),
+              label: 'Markets',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
