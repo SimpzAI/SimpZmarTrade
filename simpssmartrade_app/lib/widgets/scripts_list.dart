@@ -24,13 +24,16 @@ class TradeScript {
 }
 
 class ScriptsList extends StatelessWidget {
+
   final bool showHeader;
 
   const ScriptsList({super.key, this.showHeader = false});
 
   @override
   Widget build(BuildContext context) {
+
     final scripts = [
+
       TradeScript(
         symbol: "BEL",
         exchange: "NSE",
@@ -41,6 +44,7 @@ class ScriptsList extends StatelessWidget {
         t2: 460,
         newsFlag: "OK",
       ),
+
       TradeScript(
         symbol: "SUNPHARMA",
         exchange: "NSE",
@@ -56,19 +60,26 @@ class ScriptsList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+
         if (showHeader)
           const Padding(
-            padding: EdgeInsets.only(bottom: 8),
+            padding: EdgeInsets.only(bottom: 10),
             child: Text(
               "Scripts",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
+
         Expanded(
           child: ListView.builder(
             itemCount: scripts.length,
             itemBuilder: (context, index) {
+
               return _ScriptCard(script: scripts[index]);
+
             },
           ),
         ),
@@ -78,44 +89,59 @@ class ScriptsList extends StatelessWidget {
 }
 
 class _ScriptCard extends StatelessWidget {
+
   const _ScriptCard({required this.script});
 
   final TradeScript script;
 
   @override
   Widget build(BuildContext context) {
+
     final cs = Theme.of(context).colorScheme;
 
     Color badgeColor;
 
     switch (script.newsFlag) {
+
       case 'OK':
         badgeColor = Colors.green;
         break;
+
       case 'CAUTION':
         badgeColor = Colors.orange;
         break;
+
       case 'AVOID':
         badgeColor = Colors.red;
         break;
+
       default:
         badgeColor = cs.outline;
     }
 
     return Card(
+
       margin: const EdgeInsets.symmetric(vertical: 8),
+
       child: Padding(
+
         padding: const EdgeInsets.all(16),
+
         child: Column(
+
           crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
 
-            /// SYMBOL + BADGE
+            /// HEADER ROW
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+
                 Row(
                   children: [
+
                     Text(
                       script.symbol,
                       style: const TextStyle(
@@ -123,39 +149,49 @@ class _ScriptCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+
                     const SizedBox(width: 8),
+
                     Chip(label: Text(script.exchange)),
+
                   ],
                 ),
+
                 Chip(
                   label: Text(script.newsFlag),
                   backgroundColor: badgeColor.withOpacity(0.2),
                   labelStyle: TextStyle(color: badgeColor),
                 ),
+
               ],
             ),
 
             const SizedBox(height: 8),
 
-            /// SETUP DESCRIPTION
+            /// SETUP
+
             Text(script.setup),
 
             const SizedBox(height: 10),
 
-            /// ENTRY / SL / TARGETS
+            /// ENTRY TARGETS
+
             Wrap(
               spacing: 8,
               children: [
+
                 Chip(label: Text("Entry: ${script.entry}")),
                 Chip(label: Text("SL: ${script.sl}")),
                 Chip(label: Text("T1: ${script.t1}")),
                 Chip(label: Text("T2: ${script.t2}")),
+
               ],
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
 
             /// LIVE PRICE
+
             FutureBuilder<double?>(
               future: MarketDataService.getPrice(script.symbol),
               builder: (context, snapshot) {
@@ -164,11 +200,13 @@ class _ScriptCard extends StatelessWidget {
                   return const Text("Loading price...");
                 }
 
+                final price = snapshot.data ?? 0;
+
                 return Text(
-                  "LTP: ₹${snapshot.data}",
+                  "LTP: ₹$price",
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
                     color: Colors.green,
                   ),
                 );

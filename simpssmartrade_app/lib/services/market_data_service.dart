@@ -7,20 +7,26 @@ class MarketDataService {
 
   static Future<double?> getPrice(String symbol) async {
 
-    final url = Uri.parse(
-      "https://api.twelvedata.com/price?symbol=$symbol:NSE&apikey=$apiKey"
-    );
+    try {
 
-    final response = await http.get(url);
+      final url = Uri.parse(
+        "https://api.twelvedata.com/price?symbol=$symbol:NSE&apikey=$apiKey"
+      );
 
-    if (response.statusCode == 200) {
+      final response = await http.get(url);
 
-      final data = jsonDecode(response.body);
+      if (response.statusCode == 200) {
 
-      if (data["price"] != null) {
-        return double.tryParse(data["price"]);
+        final data = jsonDecode(response.body);
+
+        if (data["price"] != null) {
+          return double.tryParse(data["price"]);
+        }
+
       }
 
+    } catch (e) {
+      print("Market API error: $e");
     }
 
     return null;
