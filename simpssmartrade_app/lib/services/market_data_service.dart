@@ -10,7 +10,7 @@ class MarketDataService {
     try {
 
       final url = Uri.parse(
-        "https://api.twelvedata.com/price?symbol=$symbol:NSE&apikey=$apiKey"
+        "https://api.twelvedata.com/price?symbol=$symbol.NSE&apikey=$apiKey"
       );
 
       final response = await http.get(url);
