@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const _DashboardPage(),
       const _ScriptsPage(),
       const SettingsScreen(),
-      const MarketsScreen(),
+      MarketsScreen(),
     ];
 
     return Scaffold(
