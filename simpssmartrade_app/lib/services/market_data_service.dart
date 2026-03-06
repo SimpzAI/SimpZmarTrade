@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class MarketDataService {
 
-  static const String apiKey = "6d1268f577ee44ac9e3f280d45ef9a44";
+  static const String apiKey = "YOUR_API_KEY";
 
   static Future<double?> getPrice(String symbol) async {
 
@@ -26,7 +26,7 @@ class MarketDataService {
       }
 
     } catch (e) {
-      print("Market API error: $e");
+      print(e);
     }
 
     return null;

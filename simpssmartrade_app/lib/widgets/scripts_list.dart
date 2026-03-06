@@ -24,7 +24,6 @@ class TradeScript {
 }
 
 class ScriptsList extends StatelessWidget {
-
   final bool showHeader;
 
   const ScriptsList({super.key, this.showHeader = false});
@@ -55,6 +54,7 @@ class ScriptsList extends StatelessWidget {
         t2: 1820,
         newsFlag: "OK",
       ),
+
     ];
 
     return Column(
@@ -77,9 +77,7 @@ class ScriptsList extends StatelessWidget {
           child: ListView.builder(
             itemCount: scripts.length,
             itemBuilder: (context, index) {
-
               return _ScriptCard(script: scripts[index]);
-
             },
           ),
         ),
@@ -97,12 +95,9 @@ class _ScriptCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final cs = Theme.of(context).colorScheme;
-
-    Color badgeColor;
+    Color badgeColor = Colors.grey;
 
     switch (script.newsFlag) {
-
       case 'OK':
         badgeColor = Colors.green;
         break;
@@ -114,27 +109,19 @@ class _ScriptCard extends StatelessWidget {
       case 'AVOID':
         badgeColor = Colors.red;
         break;
-
-      default:
-        badgeColor = cs.outline;
     }
 
     return Card(
-
       margin: const EdgeInsets.symmetric(vertical: 8),
 
       child: Padding(
-
         padding: const EdgeInsets.all(16),
 
         child: Column(
-
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
 
-            /// HEADER ROW
-
+            /// HEADER
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -159,8 +146,7 @@ class _ScriptCard extends StatelessWidget {
 
                 Chip(
                   label: Text(script.newsFlag),
-                  backgroundColor: badgeColor.withOpacity(0.2),
-                  labelStyle: TextStyle(color: badgeColor),
+                  backgroundColor: badgeColor.withAlpha(40),
                 ),
 
               ],
@@ -169,13 +155,11 @@ class _ScriptCard extends StatelessWidget {
             const SizedBox(height: 8),
 
             /// SETUP
-
             Text(script.setup),
 
             const SizedBox(height: 10),
 
-            /// ENTRY TARGETS
-
+            /// LEVELS
             Wrap(
               spacing: 8,
               children: [
@@ -191,13 +175,17 @@ class _ScriptCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             /// LIVE PRICE
-
             FutureBuilder<double?>(
               future: MarketDataService.getPrice(script.symbol),
+
               builder: (context, snapshot) {
 
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text("Fetching live price...");
+                }
+
                 if (!snapshot.hasData) {
-                  return const Text("Loading price...");
+                  return const Text("Price unavailable");
                 }
 
                 final price = snapshot.data ?? 0;
