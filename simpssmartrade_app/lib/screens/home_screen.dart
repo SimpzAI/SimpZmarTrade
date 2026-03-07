@@ -199,7 +199,7 @@ class _DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            const Expanded(child: ScriptsList()),
+            Expanded(child: ScriptsList()),
 
           ],
         ),
@@ -217,7 +217,7 @@ class _ScriptsPage extends StatelessWidget {
     return const SafeArea(
       child: Padding(
         padding: EdgeInsets.all(12),
-        child: ScriptsList(showHeader: true),
+        child: const ScriptsList(showHeader: true),
       ),
     );
   }

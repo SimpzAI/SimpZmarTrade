@@ -1,53 +1,92 @@
 import 'package:flutter/material.dart';
 import '../services/market_data_service.dart';
 
-class _ScriptCard extends StatefulWidget {
-  final TradeScript script;
+class TradeScript {
+  final String symbol;
+  final String exchange;
+  final String setup;
+  final double entry;
+  final double sl;
+  final double t1;
+  final double t2;
+  final String newsFlag;
 
-  const _ScriptCard({required this.script});
-
-  @override
-  State<_ScriptCard> createState() => _ScriptCardState();
+  TradeScript({
+    required this.symbol,
+    required this.exchange,
+    required this.setup,
+    required this.entry,
+    required this.sl,
+    required this.t1,
+    required this.t2,
+    required this.newsFlag,
+  });
 }
 
-class _ScriptCardState extends State<_ScriptCard> {
+class ScriptsList extends StatelessWidget {
+  final bool showHeader;
 
-  double? price;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchPrice();
-
-    /// refresh every 5 seconds
-    Future.doWhile(() async {
-
-      await Future.delayed(const Duration(seconds: 5));
-
-      if (!mounted) return false;
-
-      fetchPrice();
-
-      return true;
-    });
-  }
-
-  void fetchPrice() async {
-
-    final p = await MarketDataService.getPrice(widget.script.symbol);
-
-    if (!mounted) return;
-
-    setState(() {
-      price = p;
-    });
-
-  }
+  const ScriptsList({super.key, this.showHeader = false});
 
   @override
   Widget build(BuildContext context) {
+    final scripts = [
+      TradeScript(
+        symbol: "BEL",
+        exchange: "NSE",
+        setup: "Breakout above prev high; only long.",
+        entry: 450,
+        sl: 441,
+        t1: 455,
+        t2: 460,
+        newsFlag: "OK",
+      ),
+      TradeScript(
+        symbol: "SUNPHARMA",
+        exchange: "NSE",
+        setup: "Breakout > 1792 / VWAP reclaim.",
+        entry: 1793,
+        sl: 1770,
+        t1: 1805,
+        t2: 1820,
+        newsFlag: "OK",
+      ),
+    ];
 
-    final script = widget.script;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (showHeader)
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Text(
+              "Scripts",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: scripts.length,
+            itemBuilder: (context, index) {
+              return _ScriptCard(script: scripts[index]);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ScriptCard extends StatelessWidget {
+  const _ScriptCard({required this.script});
+
+  final TradeScript script;
+
+  @override
+  Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
     Color badgeColor;
@@ -70,16 +109,13 @@ class _ScriptCardState extends State<_ScriptCard> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
         padding: const EdgeInsets.all(16),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             /// HEADER
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Row(
                   children: [
                     Text(
@@ -89,58 +125,62 @@ class _ScriptCardState extends State<_ScriptCard> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                     const SizedBox(width: 8),
-
                     Chip(label: Text(script.exchange)),
                   ],
                 ),
-
                 Chip(
                   label: Text(script.newsFlag),
                   backgroundColor: badgeColor.withOpacity(0.2),
                   labelStyle: TextStyle(color: badgeColor),
                 ),
-
               ],
             ),
 
             const SizedBox(height: 8),
 
+            /// SETUP
             Text(script.setup),
 
             const SizedBox(height: 10),
 
+            /// ENTRY TARGETS
             Wrap(
               spacing: 8,
               children: [
-
                 Chip(label: Text("Entry: ${script.entry}")),
-
                 Chip(label: Text("SL: ${script.sl}")),
-
                 Chip(label: Text("T1: ${script.t1}")),
-
                 Chip(label: Text("T2: ${script.t2}")),
-
               ],
             ),
 
             const SizedBox(height: 12),
 
             /// LIVE PRICE
+            FutureBuilder<double?>(
+              future: MarketDataService.getPrice(script.symbol),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text("Loading price...");
+                }
 
-            Text(
-              price == null
-                  ? "Loading price..."
-                  : "LTP ₹${price!.toStringAsFixed(2)}",
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
+                if (!snapshot.hasData || snapshot.data == null) {
+                  return const Text("Price unavailable");
+                }
+
+                final price = snapshot.data!;
+
+                return Text(
+                  "LTP: ₹$price",
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                );
+              },
             ),
-
           ],
         ),
       ),
