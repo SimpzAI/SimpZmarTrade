@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import '../services/market_data_service.dart';
+
 class _ScriptCard extends StatefulWidget {
   final TradeScript script;
 
