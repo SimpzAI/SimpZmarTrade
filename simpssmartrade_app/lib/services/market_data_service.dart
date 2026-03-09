@@ -3,21 +3,21 @@ import 'package:http/http.dart' as http;
 
 class MarketDataService {
 
-  static const apiKey = "YOUR_API_KEY";
+  static const String apiKey = "6d1268f577ee44ac9e3f280d45ef9a44";
 
-  static Future<double?> getPrice(String symbol) async {
+  static Future<double?> getLTP(String symbol) async {
 
-    final url =
-        "https://api.twelvedata.com/price?symbol=$symbol:NSE&apikey=$apiKey";
+    final url = Uri.parse(
+      "https://api.twelvedata.com/price?symbol=$symbol:NSE&apikey=$apiKey"
+    );
 
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(url);
 
     if (response.statusCode == 200) {
-
-      final data = jsonDecode(response.body);
+      final data = json.decode(response.body);
 
       if (data["price"] != null) {
-        return double.parse(data["price"]);
+        return double.tryParse(data["price"]);
       }
     }
 

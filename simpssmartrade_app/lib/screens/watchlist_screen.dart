@@ -60,19 +60,24 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
                     subtitle: const Text("NSE"),
 
-                    trailing: FutureBuilder<double?>(
-                      future: MarketDataService.getPrice(symbol),
+                    FutureBuilder<double?>(
+                      future: MarketDataService.getLTP(symbol),
+                      builder: (context, snapshot) {
 
-                      builder: (context,snapshot){
+                        String price = "--";
 
-                        if(!snapshot.hasData){
-                          return const Text("...");
+                        if(snapshot.hasData){
+                          price = snapshot.data!.toStringAsFixed(2);
                         }
 
-                        return Text(
-                          "₹${snapshot.data}",
-                          style: const TextStyle(
+                      return ListTile(
+                        title: Text(symbol),
+                        subtitle: Text("NSE"),
+                        trailing: Text(
+                          "₹ $price",
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: 16
                           ),
                         );
                       },
