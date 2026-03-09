@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../models/trader_profile.dart';
-import '../models/day_session.dart';
-import '../models/trade.dart';
 import 'watchlist_screen.dart';
-import '../widgets/tomorrow_plan_card.dart';
-import '../widgets/scripts_list.dart';
-import '../widgets/discipline_strip.dart';
 import 'markets_screen.dart';
-
 import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,65 +12,50 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  late TraderProfile traderProfile;
-  late DaySession daySession;
-
   int _index = 0;
 
-  @override
-  void initState() {
-    super.initState();
-
-    traderProfile = TraderProfile(
-      capital: 150000,
-      riskLow: 2000,
-      riskNormal: 3000,
-      riskHigh: 4000,
-      marketState: MarketState.normal,
-      maxTrades: 4,
-    );
-
-    daySession = DaySession();
-  }
+  final pages = [
+    const _DashboardPage(),
+    WatchlistScreen(),
+    const MarketsScreen(),
+    const SettingsScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
 
-    final pages = <Widget>[
-      const _DashboardPage(),
-      const WatchlistScreen(),
-      const MarketsScreen(),
-      const SettingsScreen(),
-    ];
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SimpSmarTrade'),
+      body: SafeArea(
+        child: pages[_index],
       ),
-      body: pages[_index],
+
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
-        onDestinationSelected: (i) {
+        onDestinationSelected: (i){
           setState(() {
             _index = i;
           });
         },
         destinations: const [
+
           NavigationDestination(
             icon: Icon(Icons.dashboard_outlined),
-            label: 'Tomorrow',
+            label: "Tomorrow",
           ),
-          NavigationDestination(
-            icon: Icon(Icons.list_alt_outlined),
-            label: 'Scripts',
-          ),
-            NavigationDestination(
-              icon: Icon(Icons.public),
-              label: 'Markets',
-          ),
+
           NavigationDestination(
             icon: Icon(Icons.show_chart),
-            label: 'Watchlist',         
+            label: "Watchlist",
+          ),
+
+          NavigationDestination(
+            icon: Icon(Icons.public),
+            label: "Markets",
+          ),
+
+          NavigationDestination(
+            icon: Icon(Icons.settings),
+            label: "Settings",
           ),
         ],
       ),
@@ -89,136 +66,88 @@ class _HomeScreenState extends State<HomeScreen> {
 class _DashboardPage extends StatelessWidget {
   const _DashboardPage();
 
-  void _showTradeDialog(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
 
-    final scriptController = TextEditingController();
-    final entryController = TextEditingController();
-    final slController = TextEditingController();
-    final exitController = TextEditingController();
-    final qtyController = TextEditingController();
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
 
-    showDialog(
-      context: context,
-      builder: (context) {
+        const Text(
+          "SimpSmarTrade",
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
 
-        return AlertDialog(
-          title: const Text("Log Trade"),
+        const SizedBox(height: 20),
 
-          content: SingleChildScrollView(
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
             child: Column(
-              children: [
+              children: const [
 
-                TextField(
-                  controller: scriptController,
-                  decoration: const InputDecoration(labelText: "Script"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Trades"),
+                    Text("0 / 4"),
+                  ],
                 ),
 
-                TextField(
-                  controller: entryController,
-                  decoration: const InputDecoration(labelText: "Entry Price"),
-                  keyboardType: TextInputType.number,
+                SizedBox(height: 10),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("PnL"),
+                    Text("₹0"),
+                  ],
                 ),
 
-                TextField(
-                  controller: slController,
-                  decoration: const InputDecoration(labelText: "Stoploss"),
-                  keyboardType: TextInputType.number,
+                SizedBox(height: 10),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Mode"),
+                    Text("NORMAL"),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: const [
+
+                Text(
+                  "Tomorrow Plan",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
 
-                TextField(
-                  controller: exitController,
-                  decoration: const InputDecoration(labelText: "Exit Price"),
-                  keyboardType: TextInputType.number,
-                ),
+                SizedBox(height: 10),
 
-                TextField(
-                  controller: qtyController,
-                  decoration: const InputDecoration(labelText: "Quantity"),
-                  keyboardType: TextInputType.number,
-                ),
+                Text("Nifty S: 25400"),
+
+                Text("Nifty R: 25600"),
 
               ],
             ),
           ),
-
-          actions: [
-
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Cancel"),
-            ),
-
-            ElevatedButton(
-              onPressed: () {
-
-                print("Trade Saved");
-
-                Navigator.pop(context);
-              },
-              child: const Text("Save"),
-            ),
-
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-
-        child: Column(
-          children: [
-
-            DisciplineStrip(
-              tradesTaken: 0,
-              maxTrades: 4,
-              pnl: 0,
-              mode: "NORMAL",
-            ),
-
-            const SizedBox(height: 12),
-
-            const TomorrowPlanCard(),
-
-            const SizedBox(height: 12),
-
-            ElevatedButton.icon(
-              onPressed: () {
-                _showTradeDialog(context);
-              },
-              icon: const Icon(Icons.add),
-              label: const Text("Log Trade"),
-            ),
-
-            const SizedBox(height: 12),
-
-            Expanded(child: ScriptsList()),
-
-          ],
         ),
-      ),
-    );
-  }
-}
-
-class _ScriptsPage extends StatelessWidget {
-  const _ScriptsPage();
-
-  @override
-  Widget build(BuildContext context) {
-
-    return const SafeArea(
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: const ScriptsList(showHeader: true),
-      ),
+      ],
     );
   }
 }

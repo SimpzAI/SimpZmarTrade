@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MarketsScreen extends StatelessWidget {
+
   const MarketsScreen({super.key});
 
   @override
@@ -15,12 +16,9 @@ class MarketsScreen extends StatelessWidget {
       body: const Center(
         child: Text(
           "Live Markets Coming Soon",
-          style: TextStyle(
-            fontSize: 18,
-          ),
+          style: TextStyle(fontSize: 18),
         ),
       ),
-
     );
   }
 }
