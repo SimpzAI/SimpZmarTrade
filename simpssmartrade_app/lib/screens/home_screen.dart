@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/trader_profile.dart';
 import '../models/day_session.dart';
 import '../models/trade.dart';
-
+import 'watchlist_screen.dart';
 import '../widgets/tomorrow_plan_card.dart';
 import '../widgets/scripts_list.dart';
 import '../widgets/discipline_strip.dart';
@@ -46,9 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final pages = <Widget>[
       const _DashboardPage(),
-      const _ScriptsPage(),
+      const WatchlistScreen(),
+      const MarketsScreen(),
       const SettingsScreen(),
-      MarketsScreen(),
     ];
 
     return Scaffold(
@@ -77,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Markets',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            label: 'Settings',
+            icon: Icon(Icons.show_chart),
+            label: 'Watchlist',         
           ),
         ],
       ),
