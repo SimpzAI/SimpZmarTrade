@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'watchlist_screen.dart';
 import 'markets_screen.dart';
 import 'settings_screen.dart';
+import '../widgets/ai_trade_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -123,7 +124,7 @@ class _DashboardPage extends StatelessWidget {
 
         const SizedBox(height: 20),
 
-        Card(
+        GlassCard(
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -142,6 +143,10 @@ class _DashboardPage extends StatelessWidget {
                 Text("Nifty S: 25400"),
 
                 Text("Nifty R: 25600"),
+
+                const SizedBox(height: 20),
+
+                const AITradeWidget(),
 
               ],
             ),

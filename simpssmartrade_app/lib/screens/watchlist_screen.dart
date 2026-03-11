@@ -1,84 +1,97 @@
 import 'package:flutter/material.dart';
 import '../services/market_data_service.dart';
+import '../widgets/glass_card.dart';
 
-class WatchlistScreen extends StatelessWidget {
+class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
 
-  final List<String> scripts = const [
-    "RELIANCE",
-    "TCS",
-    "HDFCBANK",
-    "ICICIBANK",
-    "INFY",
-    "BEL",
-    "SUNPHARMA",
+  @override
+  State<WatchlistScreen> createState() => _WatchlistScreenState();
+}
+
+class _WatchlistScreenState extends State<WatchlistScreen> {
+
+  List<String> scripts = [
+    "RELIANCE.NSE",
+    "TCS.NSE",
+    "HDFCBANK.NSE",
+    "ICICIBANK.NSE",
+    "INFY.NSE",
+    "BEL.NSE",
+    "SUNPHARMA.NSE"
   ];
+
+  String search = "";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
 
-            const SizedBox(height: 10),
+    final filtered = scripts
+        .where((e) => e.toLowerCase().contains(search.toLowerCase()))
+        .toList();
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "Search script",
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+
+          TextField(
+            decoration: const InputDecoration(
+              hintText: "Search script",
+              prefixIcon: Icon(Icons.search),
             ),
+            onChanged: (v) {
+              setState(() {
+                search = v;
+              });
+            },
+          ),
 
-            const SizedBox(height: 10),
+          const SizedBox(height: 20),
 
-            Expanded(
-              child: ListView.builder(
-                itemCount: scripts.length,
-                itemBuilder: (context, index) {
+          Expanded(
+            child: ListView.builder(
+              itemCount: filtered.length,
+              itemBuilder: (context, i) {
 
-                  final symbol = scripts[index];
+                final symbol = filtered[i];
 
-                  return FutureBuilder<double?>(
-                    future: MarketDataService.getLTP(symbol),
-                    builder: (context, snapshot) {
+                return FutureBuilder(
+                  future: MarketDataService.getPrice(symbol),
+                  builder: (context, snapshot) {
 
-                      String price = "--";
+                    final price = snapshot.data;
 
-                      if (snapshot.hasData) {
-                        price = snapshot.data!.toStringAsFixed(2);
-                      }
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: GlassCard(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
 
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 6,
-                        ),
-                        child: ListTile(
-                          title: Text(symbol),
-                          subtitle: const Text("NSE"),
-                          trailing: Text(
-                            "₹ $price",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(symbol.split(".")[0],
+                                    style: const TextStyle(fontSize: 18)),
+                                const Text("NSE")
+                              ],
                             ),
-                          ),
+
+                            Text(
+                              price == null ? "₹ --" : "₹ $price",
+                              style: const TextStyle(fontSize: 18),
+                            )
+                          ],
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

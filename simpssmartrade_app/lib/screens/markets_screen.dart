@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
+import '../widgets/gainers_losers.dart';
+import '../widgets/commodities_widget.dart';
+import '../widgets/market_ticker.dart';
 
 class MarketsScreen extends StatelessWidget {
-
   const MarketsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: const [
 
-      appBar: AppBar(
-        title: const Text("Markets"),
-      ),
+        MarketTicker(),
 
-      body: const Center(
-        child: Text(
-          "Live Markets Coming Soon",
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
+        SizedBox(height: 20),
+
+        CommoditiesWidget(),
+
+        SizedBox(height: 20),
+
+        GainersLosersWidget(),
+      ],
     );
   }
 }
