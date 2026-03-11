@@ -3,6 +3,7 @@ import 'watchlist_screen.dart';
 import 'markets_screen.dart';
 import 'settings_screen.dart';
 import '../widgets/ai_trade_widget.dart';
+import '../widgets/glass_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

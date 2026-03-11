@@ -1,29 +1,35 @@
-import '../models/trade_idea.dart';
+class TradeIdea {
+  final String symbol;
+  final String signal;
+  final String reason;
+
+  TradeIdea({
+    required this.symbol,
+    required this.signal,
+    required this.reason,
+  });
+}
 
 class AITradeService {
 
   static List<TradeIdea> generateIdeas() {
 
-    List<TradeIdea> ideas = [
-
+    return [
       TradeIdea(
         symbol: "BEL",
         signal: "BUY",
         reason: "Defence sector momentum",
       ),
-
       TradeIdea(
         symbol: "HAL",
         signal: "BREAKOUT",
-        reason: "Strong institutional buying",
+        reason: "Strong buying volume",
       ),
-
       TradeIdea(
         symbol: "TATASTEEL",
         signal: "SWING",
-        reason: "Metal sector recovery",
+        reason: "Metal sector strength",
       ),
-
       TradeIdea(
         symbol: "INFY",
         signal: "AVOID",
@@ -31,6 +37,6 @@ class AITradeService {
       ),
     ];
 
-    return ideas;
   }
+
 }
