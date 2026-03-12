@@ -56,7 +56,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
                 final symbol = filtered[i];
 
-                return FutureBuilder(
+                return FutureBuilder<double?>(
                         future: MarketDataService.getPrice(symbol),
                         builder: (context, snapshot) {
 
@@ -64,13 +64,17 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                             return const Text("₹ --");
                           }
 
+                          final price = snapshot.data;
+
                           return Text(
-                            "₹ ${snapshot.data}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            "₹ $price",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           );
                         },
-                      );
-
+                      )
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: GlassCard(
