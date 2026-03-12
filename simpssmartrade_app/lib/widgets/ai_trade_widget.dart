@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/ai_trade_service.dart';
-import '../widgets/glass_card.dart';
-import '../services/ai_trade_service.dart';
+import '../services/ai_trade_services.dart';
 import 'glass_card.dart';
+
 
 class AITradeWidget extends StatelessWidget {
 
