@@ -21,10 +21,11 @@ class MarketDataService {
         if (result.length > 0) {
           return result[0]["regularMarketPrice"];
         }
+
       }
 
     } catch (e) {
-      print("Market API error: $e");
+      print("API ERROR: $e");
     }
 
     return null;

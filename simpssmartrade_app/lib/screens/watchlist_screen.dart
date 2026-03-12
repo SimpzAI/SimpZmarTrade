@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/market_data_service.dart';
+
 import '../widgets/glass_card.dart';
+import '../services/market_data_service.dart';
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
@@ -81,16 +82,23 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                           future: MarketDataService.getPrice(symbol),
                           builder: (context, snapshot) {
 
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Text("Loading...");
+                            }
+
                             if (!snapshot.hasData) {
                               return const Text("₹ --");
                             }
 
-                            final price = snapshot.data;
-
                             return Text(
-                              "₹ $price",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                               "₹ ${snapshot.data}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                            );
+                          },
+                        )
                               ),
                             );
                           },
