@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/ai_trade_services.dart';
+import '../services/ai_trade_service.dart';
 import 'glass_card.dart';
 
 
