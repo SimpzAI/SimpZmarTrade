@@ -11,14 +11,14 @@ class WatchlistScreen extends StatefulWidget {
 
 class _WatchlistScreenState extends State<WatchlistScreen> {
 
-  List<String> scripts = [
-    "RELIANCE.NSE",
-    "TCS.NSE",
-    "HDFCBANK.NSE",
-    "ICICIBANK.NSE",
-    "INFY.NSE",
-    "BEL.NSE",
-    "SUNPHARMA.NSE"
+  final List<String> symbols = [
+    "RELIANCE",
+    "TCS",
+    "HDFCBANK",
+    "ICICIBANK",
+    "INFY",
+    "BEL",
+    "SUNPHARMA"
   ];
 
   String search = "";
@@ -26,8 +26,8 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   @override
   Widget build(BuildContext context) {
 
-    final filtered = scripts
-        .where((e) => e.toLowerCase().contains(search.toLowerCase()))
+    final filtered = symbols
+        .where((s) => s.toLowerCase().contains(search.toLowerCase()))
         .toList();
 
     return Padding(
@@ -40,9 +40,9 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
               hintText: "Search script",
               prefixIcon: Icon(Icons.search),
             ),
-            onChanged: (v) {
+            onChanged: (value) {
               setState(() {
-                search = v;
+                search = value;
               });
             },
           ),
@@ -52,58 +52,58 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
           Expanded(
             child: ListView.builder(
               itemCount: filtered.length,
-              itemBuilder: (context, i) {
+              itemBuilder: (context, index) {
 
-                final symbol = filtered[i];
+                final symbol = filtered[index];
 
-                return FutureBuilder<double?>(
-                        future: MarketDataService.getPrice(symbol),
-                        builder: (context, snapshot) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: GlassCard(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
 
-                          if (!snapshot.hasData) {
-                            return const Text("₹ --");
-                          }
-
-                          final price = snapshot.data;
-
-                          return Text(
-                            "₹ $price",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          );
-                        },
-                      )
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: GlassCard(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(symbol.split(".")[0],
-                                    style: const TextStyle(fontSize: 18)),
-                                const Text("NSE")
-                              ],
-                            ),
-
                             Text(
-                              price == null ? "₹ --" : "₹ $price",
-                              style: const TextStyle(fontSize: 18),
-                            )
+                              symbol,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text("NSE"),
                           ],
                         ),
-                      ),
-                    );
-                  },
+
+                        FutureBuilder<double?>(
+                          future: MarketDataService.getPrice(symbol),
+                          builder: (context, snapshot) {
+
+                            if (!snapshot.hasData) {
+                              return const Text("₹ --");
+                            }
+
+                            final price = snapshot.data;
+
+                            return Text(
+                              "₹ $price",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          },
+                        ),
+
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
-          )
+          ),
+
         ],
       ),
     );
