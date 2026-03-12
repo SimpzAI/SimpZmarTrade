@@ -57,10 +57,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                 final symbol = filtered[i];
 
                 return FutureBuilder(
-                  future: MarketDataService.getPrice(symbol),
-                  builder: (context, snapshot) {
+                        future: MarketDataService.getPrice(symbol),
+                        builder: (context, snapshot) {
 
-                    final price = snapshot.data;
+                          if (!snapshot.hasData) {
+                            return const Text("₹ --");
+                          }
+
+                          return Text(
+                            "₹ ${snapshot.data}",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          );
+                        },
+                      );
 
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),

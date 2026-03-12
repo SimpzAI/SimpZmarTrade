@@ -3,22 +3,28 @@ import 'package:http/http.dart' as http;
 
 class MarketDataService {
 
-  static const apiKey = "YOUR_TWELVEDATA_API_KEY";
-
   static Future<double?> getPrice(String symbol) async {
 
-    final url = Uri.parse(
-        "https://api.twelvedata.com/price?symbol=$symbol&apikey=$apiKey");
+    try {
 
-    final response = await http.get(url);
+      final url =
+          "https://query1.finance.yahoo.com/v7/finance/quote?symbols=$symbol.NS";
 
-    if (response.statusCode == 200) {
+      final response = await http.get(Uri.parse(url));
 
-      final data = json.decode(response.body);
+      if (response.statusCode == 200) {
 
-      if (data["price"] != null) {
-        return double.parse(data["price"]);
+        final data = jsonDecode(response.body);
+
+        final result = data["quoteResponse"]["result"];
+
+        if (result.length > 0) {
+          return result[0]["regularMarketPrice"];
+        }
       }
+
+    } catch (e) {
+      print("Market API error: $e");
     }
 
     return null;
