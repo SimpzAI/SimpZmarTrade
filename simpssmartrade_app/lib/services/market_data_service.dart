@@ -14,18 +14,16 @@ class MarketDataService {
 
       if (response.statusCode == 200) {
 
-        final data = jsonDecode(response.body);
+        final data = json.decode(response.body);
 
-        final result = data["quoteResponse"]["result"];
+        final price =
+            data["quoteResponse"]["result"][0]["regularMarketPrice"];
 
-        if (result.length > 0) {
-          return result[0]["regularMarketPrice"];
-        }
-
+        return (price as num).toDouble();
       }
 
     } catch (e) {
-      print("API ERROR: $e");
+      print("Price error: $e");
     }
 
     return null;
