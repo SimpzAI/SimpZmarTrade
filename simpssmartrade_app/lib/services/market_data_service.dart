@@ -8,30 +8,21 @@ class MarketDataService {
     try {
 
       final url =
-          "https://query1.finance.yahoo.com/v7/finance/quote?symbols=$symbol.NS";
+          "https://financialmodelingprep.com/api/v3/quote-short/$symbol.NS?apikey=demo";
 
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {
-          "User-Agent": "Mozilla/5.0"
-        },
-      );
+      final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
 
         final data = json.decode(response.body);
 
-        if (data["quoteResponse"]["result"].length > 0) {
-
-          final price =
-              data["quoteResponse"]["result"][0]["regularMarketPrice"];
-
-          return (price as num).toDouble();
+        if (data.length > 0) {
+          return (data[0]["price"] as num).toDouble();
         }
       }
 
     } catch (e) {
-      print("Market API error: $e");
+      print("API error: $e");
     }
 
     return null;
