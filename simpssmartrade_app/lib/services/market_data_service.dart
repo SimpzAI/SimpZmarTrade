@@ -10,20 +10,28 @@ class MarketDataService {
       final url =
           "https://query1.finance.yahoo.com/v7/finance/quote?symbols=$symbol.NS";
 
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "User-Agent": "Mozilla/5.0"
+        },
+      );
 
       if (response.statusCode == 200) {
 
         final data = json.decode(response.body);
 
-        final price =
-            data["quoteResponse"]["result"][0]["regularMarketPrice"];
+        if (data["quoteResponse"]["result"].length > 0) {
 
-        return (price as num).toDouble();
+          final price =
+              data["quoteResponse"]["result"][0]["regularMarketPrice"];
+
+          return (price as num).toDouble();
+        }
       }
 
     } catch (e) {
-      print("Price error: $e");
+      print("Market API error: $e");
     }
 
     return null;
