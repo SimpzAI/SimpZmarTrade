@@ -78,12 +78,15 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                         builder: (context, snapshot) {
 
                           if (!snapshot.hasData) {
-                            return Text("₹ --");
+                            return const Text("₹ --");
                           }
 
                           return Text(
                            "₹ ${snapshot.data!.toStringAsFixed(2)}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           );
                         },
                       )
