@@ -74,24 +74,16 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                       ),
 
                       FutureBuilder<double?>(
-                        future: MarketDataService.getPrice(symbol),
+                        future: MarketDataService().getStockPrice(symbol),
                         builder: (context, snapshot) {
 
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Text("Loading...");
-                          }
-
                           if (!snapshot.hasData) {
-                            return const Text("₹ --");
+                            return Text("₹ --");
                           }
 
                           return Text(
-                            "₹ ${snapshot.data}",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                           "₹ ${snapshot.data!.toStringAsFixed(2)}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           );
                         },
                       )

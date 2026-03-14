@@ -1,13 +1,31 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 class MarketDataService {
 
-  static Future<double?> getPrice(String symbol) async {
+  Future<double?> getStockPrice(String symbol) async {
+    try {
 
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 800));
+      final url = Uri.parse(
+          "https://query1.finance.yahoo.com/v7/finance/quote?symbols=$symbol.NS");
 
-    // Temporary test value
-    return 1234.56;
+      final response = await http.get(url);
 
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        final result = data['quoteResponse']['result'];
+
+        if (result.isNotEmpty) {
+          return result[0]['regularMarketPrice']?.toDouble();
+        }
+      }
+
+      return null;
+
+    } catch (e) {
+      print("Price error: $e");
+      return null;
+    }
   }
-
 }
