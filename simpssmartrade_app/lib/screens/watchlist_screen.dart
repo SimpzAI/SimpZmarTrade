@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import '../widgets/stock_tile.dart';
+import '../widgets/stock_card.dart';
 
 class WatchlistScreen extends StatelessWidget {
 
   const WatchlistScreen({super.key});
 
   final List<String> stocks = const [
+
     "RELIANCE",
     "TCS",
     "HDFCBANK",
@@ -13,6 +14,7 @@ class WatchlistScreen extends StatelessWidget {
     "INFY",
     "BEL",
     "SUNPHARMA"
+
   ];
 
   @override
@@ -24,7 +26,7 @@ class WatchlistScreen extends StatelessWidget {
 
       itemBuilder: (context, index) {
 
-        return StockTile(symbol: stocks[index]);
+        return StockCard(symbol: stocks[index]);
       },
     );
   }

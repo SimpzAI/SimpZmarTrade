@@ -8,7 +8,10 @@ class MarketsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return const Center(
-      child: Text("Markets Dashboard"),
+      child: Text(
+        "Markets Dashboard",
+        style: TextStyle(fontSize: 20),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'watchlist_screen.dart';
 import 'markets_screen.dart';
 import 'settings_screen.dart';
+import 'tomorrow_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -17,9 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final screens = const [
 
+    TomorrowScreen(),
     WatchlistScreen(),
     MarketsScreen(),
     SettingsScreen(),
+
   ];
 
   @override
@@ -38,12 +41,18 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: index,
 
         onTap: (i) {
+
           setState(() {
             index = i;
           });
+
         },
 
         items: const [
+
+          BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard),
+              label: "Tomorrow"),
 
           BottomNavigationBarItem(
               icon: Icon(Icons.show_chart),
@@ -56,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.settings),
               label: "Settings"),
+
         ],
       ),
     );
