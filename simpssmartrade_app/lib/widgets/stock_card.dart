@@ -11,6 +11,7 @@ class StockCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Card(
+
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -25,17 +26,16 @@ class StockCard extends StatelessWidget {
         trailing: FutureBuilder<double?>(
           future: MarketService().getPrice(symbol),
 
-          builder: (context, snapshot) {
+          builder: (context, snapshot){
 
-            if (!snapshot.hasData) {
+            if(!snapshot.hasData){
               return const Text("₹ --");
             }
 
             return Text(
               "₹ ${snapshot.data!.toStringAsFixed(2)}",
               style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.bold
               ),
             );
           },

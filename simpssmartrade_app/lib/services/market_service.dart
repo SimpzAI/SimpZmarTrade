@@ -21,7 +21,6 @@ class MarketService {
       if (response.statusCode == 200) {
 
         final data = jsonDecode(response.body);
-
         final result = data["quoteResponse"]["result"];
 
         if (result.isNotEmpty) {

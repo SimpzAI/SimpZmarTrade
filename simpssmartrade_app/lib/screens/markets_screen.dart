@@ -10,7 +10,7 @@ class MarketsScreen extends StatelessWidget {
     return const Center(
       child: Text(
         "Markets Dashboard",
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(fontSize:20),
       ),
     );
   }

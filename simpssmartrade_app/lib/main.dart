@@ -11,8 +11,8 @@ class SimpSmarTrade extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: "SimpSmarTrade",
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: const HomeScreen(),
     );

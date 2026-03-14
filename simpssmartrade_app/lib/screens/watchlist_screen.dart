@@ -24,9 +24,10 @@ class WatchlistScreen extends StatelessWidget {
 
       itemCount: stocks.length,
 
-      itemBuilder: (context, index) {
+      itemBuilder: (context,index){
 
         return StockCard(symbol: stocks[index]);
+
       },
     );
   }

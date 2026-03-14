@@ -17,24 +17,26 @@ class TomorrowScreen extends StatelessWidget {
         Card(
           child: Padding(
             padding: EdgeInsets.all(16),
+
             child: Column(
               children: [
 
                 Text(
                   "Tomorrow Plan",
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize:18),
                 ),
 
-                SizedBox(height: 10),
+                SizedBox(height:10),
 
                 Text("Nifty Support: 25400"),
                 Text("Nifty Resistance: 25600"),
+
               ],
             ),
           ),
         ),
 
-        SizedBox(height: 20),
+        SizedBox(height:20),
 
         AITradeCard()
 

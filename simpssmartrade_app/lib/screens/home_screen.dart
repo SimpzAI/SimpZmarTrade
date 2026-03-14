@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'tomorrow_screen.dart';
 import 'watchlist_screen.dart';
 import 'markets_screen.dart';
 import 'settings_screen.dart';
-import 'tomorrow_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({super.key});
 
   @override
@@ -17,12 +16,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
 
   final screens = const [
-
     TomorrowScreen(),
     WatchlistScreen(),
     MarketsScreen(),
     SettingsScreen(),
-
   ];
 
   @override
@@ -40,12 +37,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
         currentIndex: index,
 
-        onTap: (i) {
-
+        onTap: (i){
           setState(() {
             index = i;
           });
-
         },
 
         items: const [
