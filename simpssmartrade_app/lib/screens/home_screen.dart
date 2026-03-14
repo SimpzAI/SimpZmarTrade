@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'watchlist_screen.dart';
 import 'markets_screen.dart';
 import 'settings_screen.dart';
-import '../widgets/ai_trade_widget.dart';
-import '../widgets/glass_card.dart';
 
 class HomeScreen extends StatefulWidget {
+
   const HomeScreen({super.key});
 
   @override
@@ -14,146 +13,51 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  int _index = 0;
+  int index = 0;
 
-  final pages = [
-    const _DashboardPage(),
+  final screens = const [
+
     WatchlistScreen(),
-    const MarketsScreen(),
-    const SettingsScreen(),
+    MarketsScreen(),
+    SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: SafeArea(
-        child: pages[_index],
+
+      appBar: AppBar(
+        title: const Text("SimpSmarTrade"),
       ),
 
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i){
+      body: screens[index],
+
+      bottomNavigationBar: BottomNavigationBar(
+
+        currentIndex: index,
+
+        onTap: (i) {
           setState(() {
-            _index = i;
+            index = i;
           });
         },
-        destinations: const [
 
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            label: "Tomorrow",
-          ),
+        items: const [
 
-          NavigationDestination(
-            icon: Icon(Icons.show_chart),
-            label: "Watchlist",
-          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.show_chart),
+              label: "Watchlist"),
 
-          NavigationDestination(
-            icon: Icon(Icons.public),
-            label: "Markets",
-          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.public),
+              label: "Markets"),
 
-          NavigationDestination(
-            icon: Icon(Icons.settings),
-            label: "Settings",
-          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: "Settings"),
         ],
       ),
-    );
-  }
-}
-
-class _DashboardPage extends StatelessWidget {
-  const _DashboardPage();
-
-  @override
-  Widget build(BuildContext context) {
-
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-
-        const Text(
-          "SimpSmarTrade",
-          style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-
-        const SizedBox(height: 20),
-
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: const [
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Trades"),
-                    Text("0 / 4"),
-                  ],
-                ),
-
-                SizedBox(height: 10),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("PnL"),
-                    Text("₹0"),
-                  ],
-                ),
-
-                SizedBox(height: 10),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Mode"),
-                    Text("NORMAL"),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 20),
-
-        GlassCard(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: const [
-
-                Text(
-                  "Tomorrow Plan",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(height: 10),
-
-                Text("Nifty S: 25400"),
-
-                Text("Nifty R: 25600"),
-
-                const SizedBox(height: 20),
-
-                const AITradeWidget(),
-
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

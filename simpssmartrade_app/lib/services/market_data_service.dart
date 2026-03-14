@@ -15,19 +15,16 @@ class MarketDataService {
       if (response.statusCode == 200) {
 
         final data = jsonDecode(response.body);
-
         final result = data["quoteResponse"]["result"];
 
         if (result.isNotEmpty) {
           return (result[0]["regularMarketPrice"] as num).toDouble();
         }
-
       }
 
       return null;
 
     } catch (e) {
-      print("API error: $e");
       return null;
     }
   }

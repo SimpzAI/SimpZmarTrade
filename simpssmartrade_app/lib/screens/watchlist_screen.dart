@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import '../services/market_data_service.dart';
+import '../widgets/stock_tile.dart';
 
-class WatchlistScreen extends StatefulWidget {
+class WatchlistScreen extends StatelessWidget {
+
   const WatchlistScreen({super.key});
 
-  @override
-  State<WatchlistScreen> createState() => _WatchlistScreenState();
-}
-
-class _WatchlistScreenState extends State<WatchlistScreen> {
-
-  final List<String> scripts = [
+  final List<String> stocks = const [
     "RELIANCE",
     "TCS",
     "HDFCBANK",
@@ -20,87 +15,17 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
     "SUNPHARMA"
   ];
 
-  String search = "";
-
   @override
   Widget build(BuildContext context) {
 
-    final filtered = scripts
-        .where((s) => s.toLowerCase().contains(search.toLowerCase()))
-        .toList();
+    return ListView.builder(
 
-    return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
+      itemCount: stocks.length,
 
-            TextField(
-              decoration: const InputDecoration(
-                hintText: "Search script",
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: (v){
-                setState(() {
-                  search = v;
-                });
-              },
-            ),
+      itemBuilder: (context, index) {
 
-            const SizedBox(height: 20),
-
-            ...filtered.map((symbol) {
-
-              return Card(
-                margin: const EdgeInsets.only(bottom: 15),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            symbol,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Text("NSE"),
-                        ],
-                      ),
-
-                      FutureBuilder<double?>(
-                        future: MarketDataService().getStockPrice(symbol),
-                        builder: (context, snapshot) {
-
-                          if (!snapshot.hasData) {
-                            return const Text("₹ --");
-                          }
-
-                          return Text(
-                           "₹ ${snapshot.data!.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          );
-                        },
-                      )
-
-                    ],
-                  ),
-                ),
-              );
-
-            }).toList()
-
-          ],
-        ),
-      ),
+        return StockTile(symbol: stocks[index]);
+      },
     );
   }
 }
