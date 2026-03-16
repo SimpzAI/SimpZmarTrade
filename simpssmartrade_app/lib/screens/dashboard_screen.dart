@@ -26,46 +26,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-            backgroundColor: const Color(0xFF0F0F1A),
+      backgroundColor: const Color(0xFF0F0F1A),
 
-            body: SafeArea(
-                child: pages[index],
-            ),
+      body: SafeArea(
+        child: pages[index],
+      ),
 
-            bottomNavigationBar: BottomNavigationBar(
-                backgroundColor: const Color(0xFF1A1A2E),
-                selectedItemColor: Colors.tealAccent,
-                unselectedItemColor: Colors.grey,
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFF1A1A2E),
+        selectedItemColor: Colors.tealAccent,
+        unselectedItemColor: Colors.grey,
 
-                currentIndex: index,
-                onTap: (i) => setState(() => index = i),
+        currentIndex: index,
+        onTap: (i) => setState(() => index = i),
 
-                items: const [
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.dashboard),
-                        label: "Home",
-                    ),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.show_chart),
-                        label: "Watchlist",
-                    ),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.search),
-                        label: "Search",
-                    ),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.account_balance_wallet),
-                        label: "Portfolio",
-                    ),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.settings),
-                        label: "Settings",
-                    ),
-                ],
-            ),
-        );
-    }
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard),
+              label: "Home"),
+
+          BottomNavigationBarItem(
+              icon: Icon(Icons.show_chart),
+              label: "Watchlist"),
+
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: "Search"),
+
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet),
+              label: "Portfolio"),
+
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: "Settings"),
+        ],
+      ),
+    );
+  }
+}
 
 class DashboardHome extends StatelessWidget {
   const DashboardHome({super.key});
@@ -75,30 +76,10 @@ class DashboardHome extends StatelessWidget {
 
     return ListView(
       padding: const EdgeInsets.all(16),
-      children: [
 
-        Text("SimpSmarTrade",
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+      children: const [
 
-        SizedBox(height: 20),
-
-        Card(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Text("Tomorrow Plan", style: TextStyle(fontSize: 18)),
-                SizedBox(height: 10),
-                Text("Nifty Support : 25400"),
-                Text("Nifty Resistance : 25600")
-              ],
-            ),
-          ),
-        ),
-
-        SizedBox(height: 20),
-
-        AISuggestionCard()
+        AISuggestionCard(),
 
       ],
     );
