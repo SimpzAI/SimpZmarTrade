@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/stock_card.dart';
+import '../widgets/stock_tile.dart';
 
 class WatchlistScreen extends StatelessWidget {
 
@@ -26,7 +26,7 @@ class WatchlistScreen extends StatelessWidget {
 
       itemBuilder: (context,index){
 
-        return StockCard(symbol: stocks[index]);
+        return StockTile(symbol: stocks[index]);
 
       },
     );

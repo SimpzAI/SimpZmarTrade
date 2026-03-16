@@ -68,7 +68,7 @@ class DashboardHome extends StatelessWidget {
 
     return ListView(
       padding: const EdgeInsets.all(16),
-      children: const [
+      children: [
 
         Text("SimpSmarTrade",
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
