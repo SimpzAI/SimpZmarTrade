@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+
+class PortfolioScreen extends StatelessWidget {
+  const PortfolioScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          "Portfolio",
+          style: TextStyle(fontSize: 22),
+        ),
+      ),
+    );
+  }
+}
