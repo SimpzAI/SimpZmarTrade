@@ -27,38 +27,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[index],
+            backgroundColor: const Color(0xFF0F0F1A),
 
-     bottomNavigationBar: BottomNavigationBar(
-        currentIndex: index,
-        onTap: (i) => setState(() => index = i),
+            body: SafeArea(
+                child: pages[index],
+            ),
 
-        items: const [
+            bottomNavigationBar: BottomNavigationBar(
+                backgroundColor: const Color(0xFF1A1A2E),
+                selectedItemColor: Colors.tealAccent,
+                unselectedItemColor: Colors.grey,
 
-            BottomNavigationBarItem(
-                icon: Icon(Icons.dashboard),
-                label: "Home"),
+                currentIndex: index,
+                onTap: (i) => setState(() => index = i),
 
-            BottomNavigationBarItem(
-                icon: Icon(Icons.show_chart),
-                label: "Watchlist"),
-
-            BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: "Search"),
-
-            BottomNavigationBarItem(
-                icon: Icon(Icons.account_balance_wallet),
-                label: "Portfolio"),
-
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: "Settings"),
-        ],
-      ),
-    );
-  }
-}
+                items: const [
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.dashboard),
+                        label: "Home",
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.show_chart),
+                        label: "Watchlist",
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.search),
+                        label: "Search",
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.account_balance_wallet),
+                        label: "Portfolio",
+                    ),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.settings),
+                        label: "Settings",
+                    ),
+                ],
+            ),
+        );
+    }
 
 class DashboardHome extends StatelessWidget {
   const DashboardHome({super.key});
