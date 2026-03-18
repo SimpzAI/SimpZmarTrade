@@ -15,19 +15,14 @@ class GainersLosersCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
-
           Text("Top Gainers",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           SizedBox(height: 6),
-
           Text("BEL  +4.5%"),
           Text("TATASTEEL  +3.2%"),
-
           SizedBox(height: 12),
-
           Text("Top Losers",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-
           Text("INFY  -1.8%"),
           Text("HDFC  -1.1%"),
         ],
