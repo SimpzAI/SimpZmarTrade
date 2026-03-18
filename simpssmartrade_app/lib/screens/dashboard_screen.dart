@@ -4,6 +4,9 @@ import 'watchlist_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 import 'portfolio_screen.dart';
+import '../widgets/market_index_card.dart';
+import '../widgets/commodities_card.dart';
+import '../widgets/gainers_losers_card.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -31,7 +34,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
       backgroundColor: const Color(0xFF0F0F1A),
 
       body: SafeArea(
-        child: pages[index],
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              children: const [
+
+                MarketIndexCard(),
+
+                SizedBox(height: 16),
+
+                AISuggestionCard(),
+
+                SizedBox(height: 16),
+
+                CommoditiesCard(),
+
+                SizedBox(height: 16),
+
+                GainersLosersCard(),
+              ],
+            ),
+          ),
+        ),
       ),
 
       bottomNavigationBar: BottomNavigationBar(
