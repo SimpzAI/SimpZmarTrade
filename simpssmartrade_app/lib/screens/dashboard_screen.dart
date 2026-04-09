@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/ai_suggestion_card.dart';
-import 'watchlist_screen.dart';
-import 'search_screen.dart';
-import 'settings_screen.dart';
-import 'portfolio_screen.dart';
 import '../widgets/market_index_card.dart';
 import '../widgets/commodities_card.dart';
 import '../widgets/gainers_losers_card.dart';
+
+import 'watchlist_screen.dart';
+import 'search_screen.dart';
+import 'portfolio_screen.dart';
+import 'settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -16,97 +18,83 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
   int index = 0;
 
-  final pages = [
-    const DashboardHome(),
-    const WatchlistScreen(),
-    const SearchScreen(),
-    const PortfolioScreen(),
-    const SettingsScreen(),
+  final pages = const [
+    DashboardHome(),
+    WatchlistScreen(),
+    SearchScreen(),
+    PortfolioScreen(),
+    SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F1A),
 
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Column(
-              children: const [
-
-                MarketIndexCard(),
-
-                SizedBox(height: 16),
-
-                AISuggestionCard(),
-
-                SizedBox(height: 16),
-
-                CommoditiesCard(),
-
-                SizedBox(height: 16),
-
-                GainersLosersCard(),
-              ],
-            ),
-          ),
-        ),
-      ),
+      // ✅ THIS FIXES YOUR TAB ISSUE
+      body: pages[index],
 
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF1A1A2E),
         selectedItemColor: Colors.tealAccent,
         unselectedItemColor: Colors.grey,
-
         currentIndex: index,
         onTap: (i) => setState(() => index = i),
-
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard),
-              label: "Home"),
-
+              icon: Icon(Icons.dashboard), label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.show_chart),
-              label: "Watchlist"),
-
+              icon: Icon(Icons.show_chart), label: "Watchlist"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: "Search"),
-
+              icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet),
-              label: "Portfolio"),
-
+              icon: Icon(Icons.account_balance_wallet), label: "Portfolio"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: "Settings"),
+              icon: Icon(Icons.settings), label: "Settings"),
         ],
       ),
     );
   }
 }
 
+// ✅ FULL DASHBOARD UI
 class DashboardHome extends StatelessWidget {
   const DashboardHome({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
 
-    return ListView(
-      padding: const EdgeInsets.all(16),
+              // 🔹 Market Overview
+              MarketIndexCard(),
 
-      children: const [
+              SizedBox(height: 16),
 
-        AISuggestionCard(),
+              // 🔹 AI Suggestions
+              AISuggestionCard(),
 
-      ],
+              SizedBox(height: 16),
+
+              // 🔹 Commodities
+              CommoditiesCard(),
+
+              SizedBox(height: 16),
+
+              // 🔹 Gainers / Losers
+              GainersLosersCard(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
