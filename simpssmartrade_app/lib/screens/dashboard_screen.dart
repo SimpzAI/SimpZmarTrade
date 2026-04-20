@@ -20,32 +20,39 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int index = 0;
 
-  final pages = const [
-    DashboardHome(),
-    WatchlistScreen(),
-    SearchScreen(),
-    PortfolioScreen(),
-    SettingsScreen(),
+  final pages = [
+    const DashboardHome(),
+    const WatchlistScreen(),
+    const SearchScreen(),
+    const PortfolioScreen(),
+    const SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F1A),
+
+      // ✅ THIS IS THE MAIN FIX
       body: pages[index],
+
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF1A1A2E),
         selectedItemColor: Colors.tealAccent,
         unselectedItemColor: Colors.grey,
         currentIndex: index,
         onTap: (i) => setState(() => index = i),
-        type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: "Watchlist"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet), label: "Portfolio"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard), label: "Home"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.show_chart), label: "Watchlist"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet), label: "Portfolio"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: "Settings"),
         ],
       ),
     );
@@ -57,19 +64,23 @@ class DashboardHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: const [
-            MarketIndexCard(),
-            SizedBox(height: 16),
-            AISuggestionCard(),
-            SizedBox(height: 16),
-            CommoditiesCard(),
-            SizedBox(height: 16),
-            GainersLosersCard(),
-          ],
+    return Scaffold(
+      backgroundColor: const Color(0xFF0F0F1A),
+
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: const [
+              MarketIndexCard(),
+              SizedBox(height: 16),
+              AISuggestionCard(),
+              SizedBox(height: 16),
+              CommoditiesCard(),
+              SizedBox(height: 16),
+              GainersLosersCard(),
+            ],
+          ),
         ),
       ),
     );
