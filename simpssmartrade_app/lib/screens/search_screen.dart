@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import '../services/search_service.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -18,15 +19,35 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(onChanged: search),
-        Expanded(
-          child: ListView(
-            children: results.map((e) => ListTile(title: Text(e))).toList(),
-          ),
-        )
-      ],
+    return Scaffold(
+      backgroundColor: const Color(0xFF0F0F1A),
+      body: SafeArea(
+        child: Column(
+          children: [
+
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                onChanged: search,
+                decoration: const InputDecoration(
+                  hintText: "Search stock...",
+                  filled: true,
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: ListView(
+                children: results
+                    .map((e) => ListTile(
+                          title: Text(e),
+                        ))
+                    .toList(),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
