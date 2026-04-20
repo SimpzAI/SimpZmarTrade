@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '../services/search_service.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -9,66 +9,24 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
 
-  List stocks = [
-    "RELIANCE",
-    "TCS",
-    "INFY",
-    "HDFCBANK",
-    "ICICIBANK",
-    "BEL",
-    "HAL",
-    "TATASTEEL"
-  ];
+  List<String> results = [];
 
-  List results = [];
-
-  void search(String query){
-
-    results = stocks
-        .where((s)=> s.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-
+  void search(String query) {
+    results = SearchService.search(query);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-
-      appBar: AppBar(title: const Text("Search Script")),
-
-      body: Column(
-
-        children: [
-
-          Padding(
-            padding: const EdgeInsets.all(16),
-
-            child: TextField(
-              onChanged: search,
-              decoration: const InputDecoration(
-                  hintText: "Search NSE stock"),
-            ),
+    return Column(
+      children: [
+        TextField(onChanged: search),
+        Expanded(
+          child: ListView(
+            children: results.map((e) => ListTile(title: Text(e))).toList(),
           ),
-
-          Expanded(
-            child: ListView.builder(
-
-              itemCount: results.length,
-
-              itemBuilder: (context,index){
-
-                return ListTile(
-                  title: Text(results[index]),
-                  subtitle: const Text("NSE"),
-                );
-
-              },
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

@@ -1,37 +1,28 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 class MarketService {
 
-  Future<double?> getPrice(String symbol) async {
+  static Map<String, dynamic> getIndices() {
+    return {
+      "NIFTY": {"price": 25420, "change": 0.6},
+      "BANKNIFTY": {"price": 52800, "change": 0.8},
+      "SENSEX": {"price": 83400, "change": 0.5},
+    };
+  }
 
-    try {
+  static List<Map<String, dynamic>> getWatchlist() {
+    return [
+      {"symbol": "RELIANCE", "price": 2945.20, "chg": 1.25},
+      {"symbol": "TCS", "price": 4012.10, "chg": 0.62},
+      {"symbol": "INFY", "price": 1610.80, "chg": -1.12},
+      {"symbol": "BEL", "price": 282.35, "chg": 4.50},
+    ];
+  }
 
-      final url = Uri.parse(
-          "https://query1.finance.yahoo.com/v7/finance/quote?symbols=$symbol.NS");
-
-      final response = await http.get(
-        url,
-        headers: {
-          "User-Agent": "Mozilla/5.0",
-          "Accept": "application/json"
-        },
-      );
-
-      if (response.statusCode == 200) {
-
-        final data = jsonDecode(response.body);
-        final result = data["quoteResponse"]["result"];
-
-        if (result.isNotEmpty) {
-          return (result[0]["regularMarketPrice"] as num).toDouble();
-        }
-      }
-
-      return null;
-
-    } catch (e) {
-      return null;
-    }
+  static List<Map<String, dynamic>> getCommodities() {
+    return [
+      {"name": "Gold", "price": 72450},
+      {"name": "Silver", "price": 89200},
+      {"name": "Crude", "price": 6410},
+      {"name": "Copper", "price": 820},
+    ];
   }
 }

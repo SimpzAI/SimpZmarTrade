@@ -1,77 +1,31 @@
-// lib/widgets/stock_tile.dart
 import 'package:flutter/material.dart';
-import '../screens/stock_detail_screen.dart';
+import '../services/market_service.dart';
 
-class StockTile extends StatelessWidget {
-  final String symbol;
-  final double price;
-  final double changePercent;
-
-  const StockTile({
-    super.key,
-    required this.symbol,
-    this.price = 0.0,
-    this.changePercent = 0.0,
-  });
+class WatchlistScreen extends StatelessWidget {
+  const WatchlistScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final bool isUp = changePercent >= 0;
+    final stocks = [
+      {"symbol": "RELIANCE", "price": 2945.20, "chg": 1.25},
+      {"symbol": "TCS", "price": 4012.10, "chg": 0.62},
+      {"symbol": "INFY", "price": 1610.80, "chg": -1.12},
+      {"symbol": "BEL", "price": 282.35, "chg": 4.50},
+    ];
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => StockDetailScreen(
-              symbol: symbol,
-              price: price,
-              changePercent: changePercent,
-            ),
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
+    return Scaffold(
+      backgroundColor: const Color(0xFF0F0F1A),
+      body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1A1A2E),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                symbol,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "₹ ${price.toStringAsFixed(2)}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "${isUp ? "+" : ""}${changePercent.toStringAsFixed(2)}%",
-                  style: TextStyle(
-                    color: isUp ? Colors.greenAccent : Colors.redAccent,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+        itemCount: stocks.length,
+        itemBuilder: (context, index) {
+          final stocks = MarketService.getWatchlist();
+          return StockTile(
+            symbol: stock["symbol"] as String,
+            price: stock["price"] as double,
+            changePercent: stock["chg"] as double,
+          );
+        },
       ),
     );
   }

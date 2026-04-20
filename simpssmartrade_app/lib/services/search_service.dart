@@ -1,21 +1,19 @@
 class SearchService {
 
-  static List<String> scripts = [
+  static List<String> stocks = [
     "RELIANCE",
     "TCS",
     "INFY",
     "HDFCBANK",
     "ICICIBANK",
+    "SBIN",
     "BEL",
-    "SUNPHARMA",
     "HAL",
     "TATASTEEL",
-    "SBIN"
   ];
 
   static List<String> search(String query) {
-
-    return scripts
+    return stocks
         .where((s) =>
             s.toLowerCase().contains(query.toLowerCase()))
         .toList();

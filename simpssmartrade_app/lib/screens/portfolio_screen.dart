@@ -5,13 +5,6 @@ class PortfolioScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          "Portfolio",
-          style: TextStyle(fontSize: 22),
-        ),
-      ),
-    );
+    return const Center(child: Text("Portfolio"));
   }
 }

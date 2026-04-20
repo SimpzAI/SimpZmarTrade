@@ -32,10 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F1A),
-
-      // ✅ THIS FIXES YOUR TAB ISSUE
       body: pages[index],
-
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF1A1A2E),
         selectedItemColor: Colors.tealAccent,
@@ -44,23 +41,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onTap: (i) => setState(() => index = i),
         type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.show_chart), label: "Watchlist"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet), label: "Portfolio"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: "Settings"),
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: "Watchlist"),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet), label: "Portfolio"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
         ],
       ),
     );
   }
 }
 
-// ✅ FULL DASHBOARD UI
 class DashboardHome extends StatelessWidget {
   const DashboardHome({super.key});
 
@@ -68,31 +59,17 @@ class DashboardHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-
-              // 🔹 Market Overview
-              MarketIndexCard(),
-
-              SizedBox(height: 16),
-
-              // 🔹 AI Suggestions
-              AISuggestionCard(),
-
-              SizedBox(height: 16),
-
-              // 🔹 Commodities
-              CommoditiesCard(),
-
-              SizedBox(height: 16),
-
-              // 🔹 Gainers / Losers
-              GainersLosersCard(),
-            ],
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: const [
+            MarketIndexCard(),
+            SizedBox(height: 16),
+            AISuggestionCard(),
+            SizedBox(height: 16),
+            CommoditiesCard(),
+            SizedBox(height: 16),
+            GainersLosersCard(),
+          ],
         ),
       ),
     );
